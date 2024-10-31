@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart' as ph;
 
 class EnableInBackgroundWidget extends StatefulWidget {
   const EnableInBackgroundWidget({super.key});
@@ -33,6 +34,13 @@ class _EnableInBackgroundState extends State<EnableInBackgroundWidget> {
   }
 
   Future<void> _toggleBackgroundMode() async {
+    await [
+      ph.Permission.location,
+      ph.Permission.locationAlways,
+      ph.Permission.ignoreBatteryOptimizations,
+      ph.Permission.locationWhenInUse,
+    ].request();
+
     setState(() {
       _error = null;
     });

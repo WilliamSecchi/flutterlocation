@@ -3,6 +3,7 @@
 import 'dart:ui';
 
 import 'package:location_platform_interface/location_platform_interface.dart';
+import 'package:permission_handler/permission_handler.dart' as ph;
 
 export 'package:location_platform_interface/location_platform_interface.dart'
     show LocationAccuracy, LocationData, PermissionStatus;
@@ -74,7 +75,13 @@ class Location implements LocationPlatform {
   /// If the result is [PermissionStatus.deniedForever], no dialog will be shown
   /// on [requestPermission]. Returns a [PermissionStatus] object.
   @override
-  Future<PermissionStatus> requestPermission() {
+  Future<PermissionStatus> requestPermission() async {
+    await [
+      ph.Permission.location,
+      ph.Permission.locationAlways,
+      ph.Permission.ignoreBatteryOptimizations,
+      ph.Permission.locationWhenInUse,
+    ].request();
     return LocationPlatform.instance.requestPermission();
   }
 
